@@ -1,0 +1,150 @@
+Complex multi-scale atmospheric phenomena, like tropical 
+cyclones, challenge conventional weather and climate models, 
+which use relatively coarse uniform-grid resolutions to cope with 
+computational costs. Adaptive Mesh Refinement (AMR) techniques 
+mitigate these challenges by dynamically and transiently placing high-resolution grids 
+over salient features, thus providing sufficient local resolution while 
+limiting the computational burden. 
+This thesis explores the development of AMR within a new 
+non-hydrostatic, finite-volume dynamical core and demonstrates its 
+effectiveness in improving model accuracy and its ability to resolve 
+multi-scale features. The AMR dynamical core is implemented in a 
+hierarchy of models of increasing complexity, from an idealized 2D 
+shallow water configuration to the non-hydrostatic 3D equation set 
+with subgrid-scale physics parameterization schemes. The research explores 
+effective refinement practices and assesses the benefits achieved 
+with increased dynamic refinement. It is shown that AMR is a 
+powerful modeling approach that bridges the resolution gap for 
+extreme weather events.
+
+In Chapter \ref{chap:basicsw} we utilized a fourth-order
+finite-volume model on a cubed-sphere grid, which is adaptive in both
+space and time, to demonstrate the effectiveness of the AMR in resolving
+and tracking chosen features of interest while maintaining large-scale
+smooth flows.  Using selected shallow-water and advection test cases, we
+evaluated the AMR's ability to track and resolve features of interest
+without creating distortions or numerical noise in the large-scale
+smooth flows at the interfaces between meshes. 
+Static and dynamic refinements were analyzed to determine the 
+strengths and weaknesses of AMR in both complex flows with small-scale
+ features and large-scale smooth flows. The different test cases required 
+ different AMR criteria, such as vorticity, height, or gradient-based thresholds, 
+ in order to achieve the best accuracy. The simulations showed that the 
+ model can accurately resolve key local features without requiring global 
+ high-resolution grids. The adaptive grids are able to track features of interest 
+ reliably without inducing noise or visible distortions at the coarse-fine interfaces. 
+ Furthermore, the AMR grids keep any degradations of the large-scale smooth flows to a minimum.
+ 
+In Chapter \ref{chap:forcedsw} we implemented two different forcing schemes designed to 
+mimic the effects of moisture in the atmosphere within the 2D AMR
+shallow water system. The first moist physics
+framework added water vapor variable and models convection
+as a mass sink triggered by saturation. We implemented a
+strengthened vortex test case with this setup.  In the second
+forcing framework, a more complex moisture representation
+is used, consisting of vapor, cloud, and rain variables.
+The effects of moisture were coupled to the momentum equations
+through a potential temperature variable, linked to
+the moisture variables through latent heat. This physics
+scheme was used with a barotropic instability test case. 
+With both forcing systems and test cases, we observe the evolution
+ of features of interest at various resolutions and 
+with different refinement strategies. 
+We also investigated the AMR's effect on the physics 
+forcing as grid resolutions changed.
+These simulations can help develop AMR tagging strategies and refinement criteria.
+Both sets of simulations showed that the starting resolution must be
+able to adequately resolve the feature of interest to maximize
+the effectiveness of AMR. AMR cannot remove the errors
+caused by coarse grids before refinement begins. Additional refinement with
+AMR beyond the base grid level did improve the model, especially
+with regards to the small-scale vorticity features in the strengthening vortex test case.
+To obtain such early refinement with AMR, the tagging
+criteria must be tailored to properties that are uniquely associated
+with the origins of the feature of interest. This is difficult even in these 
+idealized shallow water systems.
+
+In Chapter \ref{chap:3dmodel}, we implemented AMR in 
+the non-hydrostatic finite-volume Chombo AMR dycore
+and tested it for idealized 3D atmospheric flows on the sphere. 
+We used two test cases: the dry dycore colliding modons
+test and an idealized TC test with a simple moist physics parameterization scheme.
+In the modon test, AMR functioned as expected. It was able to tag, refine, and follow the modons,
+and the added resolution  effectively reduced global the vorticity errors.
+The error convergence properties met our expectations given the numerical 
+schemes used and the current status of the model. However, a
+ few results triggered the need for additional in-depth examinations.
+Several stability problems were observed in both test cases 
+that need to be better understood and addressed.
+
+In the idealized TC test, the AMR runs were able to effectively reproduce results from uniform high resolution runs.
+The physics scheme was able to function effectively over multiple levels of refinement. No noise
+or instabilities were observed at coarse-fine boundaries, though some
+ numerical artifacts were observed on polar panel edges. 
+Several aspects of the TC's evolution were
+sensitive to the tagging criteria and AMR coverage such as the generation of the secondary vortex.
+Having  AMR levels applied initially is the most effective way of improving results.
+However, the delayed AMR tests demonstrated that the TC can still 
+undergo the same strengthening processes as high resolution runs once refinement is triggered.
+There is a narrow window of flexibility, in which the triggering of AMR allows the TC in the AMR 
+run to catch up to the results in the high resolution uniform run.
+The most promising refinement technique is a combination of some initial 
+refinement and AMR. The initial refinement limits error growth at the 
+base resolution and ensures that the model can resolve the feature of interest. 
+Additional AMR level then enable the feature to then be fully resolved.
+For example, in tracking and resolving TCs in a realistic climate simulation, 
+a static region of refinement
+could be placed over regions of cyclogenesis. Any storms that
+develop could be further refined and followed with AMR as they traverse
+and exit the region of static refinement.
+
+
+\subsection{Collaborations}
+This research has built collaborations between the University of Michigan (UofM), the 
+Applied Numerical Algorithms Group (ANAG) at the Lawrence Berkeley National Laboratory (LBNL), and
+the University of California, Davis (UC Davis). In particular, direct contributors to 
+the research contained in this thesis include 
+Christiane Jablonowski (UofM), Hans Johansen (LBNL), 
+Peter McCorquodale (LBNL), Phillip Colella (LBNL), and Paul Ullrich (UC Davis).
+
+\subsection{Future Work}
+
+\textbf{AMR dycore development:}
+Additional effort is required in implementing, validating, and improving AMR within GCMs.
+Use of AMR in a 3D non-hydrostatic dycore is a relatively recent application. 
+Further development includes the creation
+of more complex models with realistic physics schemes, with
+the goal of running aqua-planet simulations with full-physics schemes. 
+Implementing vertical refinement with AMR is another algorithm development focus.
+With an AMR non-hydrostatic model, grid resolutions on the order of 1km or finer are feasible.
+At these resolutions, the aspect ratios between the horizontal and vertical lengths of a grid cell 
+can be come highly skewed.  The addition of more vertical cells would alleviate this issue, and 
+increase vertical resolution. 
+
+ \vspace{6pt}
+\textbf{Scale aware subgrid physics parameterizations:}
+The effectiveness of VRGCMs is limited by the sub-grid physical parameterizations used to
+approximate atmospheric features including radiation and sub-grid scale process like convection, 
+clouds, and turbulence that cannot be resolved by the dycore.
+In adaptive schemes, the subgrid-scale parameterizations need to be able to adjust for changes in scale.  
+A model will need to be able to phase out certain subgrid-scale processes, like deep
+convection, as resolution is increased and these processes are resolved on the actual mesh.
+One novel research avenue is the application of artificial intelligence to aid in the development of
+these scale-aware physics schemes.
+
+\vspace{6pt}
+\textbf{AMR and topography:}
+Choosing an effective method to handle topography is a challenging endeavor for any model. 
+The question of smoothing always arises as very steep topological gradients can cause issues 
+for the vertical coordinates and create numerical noise.  AMR faces the additional hurdle of how to deal 
+with topography when the grid is refined over it.  Literature on this subject is rather sparse, but there are 
+several possible methods of approaching this issue.  One traditional method is to merely interpolate the
+ existing coarse-grid topography to the new grid cells.  This method, though preserving monotonicity, will not necessarily 
+ improve orographic representation as it cannot make mountains taller, valleys deeper, or gradients steeper.   
+ A second method would be to actually alter the topographic features making them more pronounced 
+ and even steeper or taller when the grid is refined.  The topography can then be smoothed down for 
+ coarse grids and merely updated back to the high-resolution version when AMR refines it.  
+ Such a method provides a more realistic orographic representation but could be numerically 
+ unsound, causing air mass conservation issues and creating large gravity waves.  A third method 
+ is to merely keep a static refinement mesh over large topographic features, though this 
+ could be computationally inefficient.

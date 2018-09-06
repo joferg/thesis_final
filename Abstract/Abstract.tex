@@ -1,0 +1,60 @@
+Complex multi-scale atmospheric phenomena, like tropical 
+cyclones, challenge conventional weather and climate models, 
+which use relatively coarse uniform-grid resolutions to cope with 
+computational costs. Adaptive Mesh Refinement (AMR) techniques 
+mitigate these challenges by dynamically and transiently placing high-resolution grids 
+over salient features, thus providing sufficient local resolution while 
+limiting the computational burden. 
+
+This thesis explores the development of AMR, a technique that 
+has been featured only sporadically in the atmospheric science 
+literature, within a new nonhydrostatic, 
+finite-volume dynamical core and demonstrates AMR's effectiveness in 
+improving model accuracy and ability to resolve multi-scale features. 
+This high-order finite-volume model implements adaptive refinement in both space and 
+time on a cubed-sphere grid using a mapped-multiblock mesh technique developed with
+the Chombo AMR library. The AMR dynamical core is implemented in a hierarchy of
+models of increasing complexity, from an idealized 2D shallow water configuration 
+to the nonhydrostatic 3D equation set with subgrid-scale parameterizations schemes. 
+AMR's numerical accuracy, computational efficiency, and ability to track and resolve
+multifaceted and evolving features are assessed with
+a variety of existing and new test cases, implemented within each model iteration.
+
+Both static and dynamic refinements are analyzed to 
+determine the strengths and weaknesses of AMR in both 
+complex flows with small-scale features and large-scale smooth flows.
+The different test cases required different AMR criteria, such 
+as vorticity, or minimum pressure based thresholds, 
+in order to achieve the best accuracy for cost. Simulations show 
+that the model's AMR can accurately resolve key local features in 
+both shallow water and 3D test cases without 
+requiring global high-resolution grids, as the adaptive grids are able 
+to track features of interest reliably without inducing noise or visible 
+distortions at the coarse-fine interfaces. Furthermore, the AMR grids 
+keep degradation of the large-scale smooth flows to a minimum.
+2D and 3D physics parameterizations are able to 
+function effectively over multiple levels of refinement, though
+the parameterizations are sensitive to grid resolution.
+
+AMR is most effective when refinement is triggered early 
+or when the base uniform resolution can partially 
+resolve the features of interests. Very coarse base resolutions
+lead to large initial errors that cannot be overcome by AMR.
+However, the addition of refinement later in the simulation still results
+in significant improvements, especially in 
+resolving small-scale features. The research showed that
+flow properties, such as strong gradients or rainbands, 
+can be sensitive to small changes in AMR
+criteria. These may delay the onset of the refinement
+ or alter the shape of the refined area, which
+impacts the evolution of the flow. With coarse 
+base resolutions, the tagging criteria must 
+therefore be uniquely tailored to capture the early 
+growth phases of the feature of interest.
+A promising refinement technique is a combination of 
+some initial refinement and AMR. 
+The initial refinement limits error growth at the base 
+resolution and ensures that the model can 
+resolve the feature of interest. Overall,
+AMR is shown to be a powerful modeling approach 
+that bridges the resolution gap for extreme weather events.

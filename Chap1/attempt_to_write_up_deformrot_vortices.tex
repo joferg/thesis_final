@@ -1,0 +1,107 @@
+The implementation of this test case requires the use of the regular spherical
+coordinates $(\theta,\lambda)$ where $\theta$ is latitude and $\lambda$ is longitude
+and a rotated spherical coordinated system $(\theta', \lambda')$ that is offset from the regular  
+spherical coordinates by angle $\alpha$. For the moving vortices test, the north pole
+of the rotated coordinate system is set at $(\theta_p, \lambda_p)$ in
+the regular unrotated coordinates. Any position in the unrotated coordinates $(\theta, \lambda)$
+can be represented in rotated coordinates $(\theta', \lambda')$ via the following relations:
+\begin{equation}
+   \label{eq:rotlam} \lambda'(\lambda,\theta) = \mathrm{arctan}\left[\frac{\cos\theta\sin\left(\lambda-\lambda_p\right)}
+       {\cos\theta\sin\theta_p \cos\left(\lambda - \lambda_p\right) - \cos\theta_p \sin\theta}\right]
+\end{equation}
+and
+\begin{equation}
+   \label{eq:rotlthet} \theta'(\lambda,\theta) = \mathrm{arcsin}\left[\sin\theta \sin\theta_p + 
+       \cos\theta \cos\theta_p \cos\left(\lambda - \lambda_p\right) \right].
+\end{equation}
+Correspondingly, the inverse relations are
+\begin{equation}
+   \label{eq:unrotlam} \lambda(\lambda',\theta') = \lambda_p + \mathrm{arctan}\left[\frac{\cos\theta'\sin\lambda'}
+       {\sin\theta' \cos\theta_p + \cos\theta' \cos\lambda' \sin\theta_p}\right]
+\end{equation}
+and
+\begin{equation}
+   \label{eq:unrotlthet} \theta(\lambda',\theta') = \mathrm{arcsin}\left(\sin\theta' \sin\theta_p - 
+       \cos\theta' \cos\theta_p \cos\lambda' \right).
+\end{equation}
+
+The implementation of this test case requires the use of the regular spherical
+coordinates $(\theta,\lambda)$ where $\theta$ is latitude and $\lambda$ is longitude
+and a rotated spherical coordinated system $(\theta', \lambda')$ that is offset from the regular  
+spherical coordinates by angle $\alpha$. For the moving vortices test, the north pole
+of the rotated coordinate system is set at $(\theta_p, \lambda_p)$ in
+the regular unrotated coordinates. Any position in the unrotated coordinates $(\theta, \lambda)$
+can be represented in rotated coordinates $(\theta', \lambda')$ via the following relations:
+\begin{equation}
+   \label{eq:rotlam} \lambda'(\lambda,\theta) = \mathrm{arctan}\left[\frac{\cos\theta\sin\left(\lambda-\lambda_p\right)}
+       {\cos\theta\sin\theta_p \cos\left(\lambda - \lambda_p\right) - \cos\theta_p \sin\theta}\right]
+\end{equation}
+and
+\begin{equation}
+   \label{eq:rotlthet} \theta'(\lambda,\theta) = \mathrm{arcsin}\left[\sin\theta \sin\theta_p + 
+       \cos\theta \cos\theta_p \cos\left(\lambda - \lambda_p\right) \right].
+\end{equation}
+Correspondingly, the inverse relations are
+\begin{equation}
+   \label{eq:unrotlam} \lambda(\lambda',\theta') = \lambda_p + \mathrm{arctan}\left[\frac{\cos\theta'\sin\lambda'}
+       {\sin\theta' \cos\theta_p + \cos\theta' \cos\lambda' \sin\theta_p}\right]
+\end{equation}
+and
+\begin{equation}
+   \label{eq:unrotlthet} \theta(\lambda',\theta') = \mathrm{arcsin}\left(\sin\theta' \sin\theta_p - 
+       \cos\theta' \cos\theta_p \cos\lambda' \right).
+\end{equation}
+
+The pair of vortices create the deformational flow that causes the roll-up of
+the tracer. One vortex is centered at $(\theta_c,\lambda_c$) with respect
+to the unrotated sphere and the other is generated at its anti-pole.  The
+profile of this vortex is defined with respect to a rotated sphere $(\theta',\lambda')$
+whose north pole is the the vortex center $(\theta_c,\lambda_c$).
+The vortex is prescribed a tangential velocity
+\begin{equation}
+   \label{eq:defrotvtan} V =v_0\frac{3\sqrt{3}}{2}\mathrm{sech}^2(\rho)\mathrm{tanh}(\rho).
+\end{equation}
+where the radial distance of the vortex 
+$\rho = \rho_0 \cos\theta'$ is dependent on the constant parameter $\rho_0$ and
+$\theta'$ in the rotated coordinates.
+The velocity scaling parameter is set to be $v_0 = 2\pi a / T$ where the Earth radius 
+$a=6.37122 \times 10^6$ m and
+$T=12$ days is the simulation run length.
+The resulting angular velocity of the vortex varies with radial distance and is
+defined as
+\begin{equation}
+   \label{eq:defrotomega} 
+   \omega_r (\theta ') = \begin{cases}
+     V / a\rho & \quad\mathrm{if}\quad \rho\neq 0, \\
+     0  & \quad\mathrm{if}\quad \rho = 0.
+   \end{cases}
+\end{equation}
+
+
+
+The resulting solution for the tracer field is
+
+
+The moving vortices test cases combines the deformational flow
+with a solid-body rotation background flow. The background velocity moves
+the vortex along a trajectory. 
+The time dependent wind speeds combine solid body rotation velocity $(u_{sb}, v_{sb})$
+with the deformational flow $(u_r, v_r)$ 
+\begin{equation}
+    \label{eq:defrotvel}
+    u(t) = u_{sb} + u_r(t) \quad \mathrm{and} \quad v(t) = v_{sb} + v_r(t)
+\end{equation}
+\begin{equation}
+  \label{eq:defrotu} 
+  \begin{split} u(t) = & u_0\left(\cos\theta\cos\alpha + \sin\theta\cos\lambda\sin\alpha\right) \\
+     & +  a\omega_r \big(\sin\theta_c(t)\cos\theta - \cos\theta_c(t)\cos\left[\lambda - \lambda_c(t)\right]\sin\theta\big)
+   \end{split}
+\end{equation}
+\begin{equation}
+  \label{eq:defrotv} v(t) = - u_0 \sin\lambda\sin\alpha + a\omega_r\big(\cos\theta_c(t)\sin\left[\lambda - \lambda_c(t)\right]\big)
+\end{equation}
+$u_0 = 2\pi a / (12 \mathrm{  days}) = 38.61$ m/s.
+\begin{equation}
+    \label{eq:defroth} \phi(\lambda',\theta', t) = 1 - \mathrm{tanh}\left[\frac{\rho}{\gamma}\sin\left(\lambda' - \omega_r t\right)\right]
+\end{equation}
+Converting between rotated $(\lambda',\theta')$ and unrotated coordinates $(\lambda,\theta)$
